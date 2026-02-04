@@ -22,6 +22,45 @@ document.addEventListener("click", e => {
   }
 });
 
+function makeDraggable(win, titleSelector = ".title-bar") {
+  // Wait until the element exists
+  const titleBar = win.querySelector(titleSelector);
+  if (!titleBar) return; // Exit safely if not found
+
+  let dragging = false, offsetX = 0, offsetY = 0;
+
+  titleBar.onmousedown = e => {
+    dragging = true;
+    offsetX = e.clientX - win.offsetLeft;
+    offsetY = e.clientY - win.offsetTop;
+    win.style.zIndex = zIndex++;
+    e.preventDefault(); // prevent text selection
+  };
+
+  document.onmousemove = e => {
+    if (!dragging) return;
+
+    const desktopRect = desktop.getBoundingClientRect();
+    const winRect = win.getBoundingClientRect();
+
+    let x = e.clientX - offsetX;
+    let y = e.clientY - offsetY;
+
+    // Clamp to desktop bounds
+    x = Math.max(desktopRect.left,
+        Math.min(x, desktopRect.right - winRect.width));
+    y = Math.max(desktopRect.top,
+        Math.min(y, desktopRect.bottom - winRect.height));
+
+    win.style.left = x - desktopRect.left + "px";
+    win.style.top = y - desktopRect.top + "px";
+  };
+
+  document.onmouseup = () => dragging = false;
+}
+
+
+
 /* INTERNET EXPLORER WINDOW */
 function openIEWindow(url) {
   const win = document.createElement("div");
@@ -75,6 +114,118 @@ function openIEWindow(url) {
 
   document.onmouseup = () => dragging = false;
 }
+
+function openWinamp() {
+  // Playlist
+  const playlist = [
+    { title: "Antilock - apologies for our absence", src: "audio/1.mp3" },
+    { title: "Antilock - next time", src: "audio/2.mp3" },
+    { title: "Antilock - killing my idols", src: "audio/3.mp3" }
+  ];
+  let currentTrack = 0;
+
+  // Create the Winamp window
+  const win = document.createElement("div");
+  win.className = "window";
+  win.style.width = "320px";
+  win.style.height = "160px"; // enough for controls + progress
+  win.style.top = "150px";
+  win.style.left = "200px";
+  win.style.zIndex = zIndex++;
+
+  // HTML structure
+  win.innerHTML = `
+    <div class="title-bar">
+      <span>Winamp</span>
+      <div class="close-btn"></div>
+    </div>
+    <div class="winamp-body" style="
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: #c0c0c0;
+        height: calc(100% - 24px);
+        padding: 4px;
+        box-sizing: border-box;
+    ">
+      <div class="winamp-track" style="font-size: 12px; text-align:center; margin-bottom:6px;">
+        Track: ${playlist[currentTrack].title}
+      </div>
+      <div class="winamp-controls" style="margin-bottom: 6px;">
+        <button id="prev-btn">⏮</button>
+        <button id="play-btn">▶</button>
+        <button id="pause-btn">⏸</button>
+        <button id="stop-btn">⏹</button>
+        <button id="next-btn">⏭</button>
+      </div>
+      <div class="progress-container" style="width: 90%; height: 8px; background:#808080; border:1px solid #404040; cursor:pointer;">
+        <div class="progress-bar" style="width:0%; height:100%; background:#000080;"></div>
+      </div>
+    </div>
+    <audio id="winamp-audio" src="${playlist[currentTrack].src}"></audio>
+  `;
+
+  desktop.appendChild(win);
+
+  // Close button
+  win.querySelector(".close-btn").onclick = () => win.remove();
+
+  // Make draggable
+  makeDraggable(win);
+
+  // Audio elements
+  const audio = win.querySelector("#winamp-audio");
+  const trackLabel = win.querySelector(".winamp-track");
+  const progressBar = win.querySelector(".progress-bar");
+  const progressContainer = win.querySelector(".progress-container");
+
+  const updateTrack = () => {
+    audio.src = playlist[currentTrack].src;
+    trackLabel.textContent = "Track: " + playlist[currentTrack].title;
+    audio.play();
+  };
+
+  // Buttons
+  win.querySelector("#play-btn").onclick = () => audio.play();
+  win.querySelector("#pause-btn").onclick = () => audio.pause();
+  win.querySelector("#stop-btn").onclick = () => {
+    audio.pause();
+    audio.currentTime = 0;
+  };
+  win.querySelector("#prev-btn").onclick = () => {
+    currentTrack = (currentTrack - 1 + playlist.length) % playlist.length;
+    updateTrack();
+  };
+  win.querySelector("#next-btn").onclick = () => {
+    currentTrack = (currentTrack + 1) % playlist.length;
+    updateTrack();
+  };
+
+  // Auto next track
+  audio.onended = () => {
+    currentTrack = (currentTrack + 1) % playlist.length;
+    updateTrack();
+  };
+
+  // Update progress bar
+  audio.ontimeupdate = () => {
+    const percent = (audio.currentTime / audio.duration) * 100 || 0;
+    progressBar.style.width = percent + "%";
+  };
+
+  // Seek on click
+  progressContainer.onclick = e => {
+    const rect = progressContainer.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const newTime = (clickX / rect.width) * audio.duration;
+    audio.currentTime = newTime;
+  };
+}
+
+
+
+
 
 function openResumeWindow() {
   const win = document.createElement("div");
