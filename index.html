@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Cal Churchill</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="images/favicon.png" type="image/png" />
+</head>
+<body>
+
+<div id="desktop">
+  <div class="icon" ondblclick="openIEWindow('https://calchurchill.bandcamp.com/')">
+    <img src="https://win98icons.alexmeub.com/icons/png/cd_audio_cd_a-0.png" />
+    <span>Music</span>
+  </div>
+  <div class="icon" ondblclick="openNotepad()">
+    <img src="https://win98icons.alexmeub.com/icons/png/notepad-0.png" />
+    <span>About Me</span>
+  </div>
+  <div class="icon" ondblclick="openPhotosWindow()">
+    <img src="https://win98icons.alexmeub.com/icons/png/camera-0.png" />
+    <span>My Photos</span>
+  </div>
+  <div class="icon" ondblclick="openResumeWindow()">
+    <img src="https://win98icons.alexmeub.com/icons/png/file_lines-0.png" />
+    <span>Resume</span>
+  </div>
+  <div class="icon" ondblclick="openEmail()">
+    <img src="https://win98icons.alexmeub.com/icons/png/envelope_closed-0.png" />
+    <span>Email Me</span>
+  </div>
+</div>
+
+<!-- START MENU -->
+<div id="start-menu">
+  <div class="start-header">Windows 95</div>
+  <div class="start-item" onclick="openIEWindow('https://calchurchill.bandcamp.com/')">
+    Music
+  </div>
+  <div class="start-item" onclick="openNotepad()">
+    About Me
+  </div>
+
+  <div class="start-item" onclick="openResumeWindow()">
+    Resume
+  </div>
+
+  <div class="start-item" onclick="openEmail()">
+    Email Me
+  </div>
+
+  <div class="start-item" onclick="formatHardDrive()">
+    Format Hard Drive
+  </div>
+
+  <div class="start-item" onclick="shutDown()">
+    Shut Down…
+  </div>
+
+</div>
+
+<!-- TASKBAR -->
+<div id="taskbar">
+  <div id="start-button">Start</div>
+</div>
+
+<!-- SHUTDOWN OVERLAY -->
+<div id="shutdown-screen">
+  <video
+    id="shutdown-video"
+    autoplay
+    playsinline>
+  </video>
+  <div id="shutdown-credits">
+    <div class="credits-line title">Next Time</div>
+    <div class="credits-line artist">Antilock</div>
+    <div class="credits-line director">Dir. Cal Churchill</div>
+    <div class="credits-line label">Nor'easter Records</div>
+  </div>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
