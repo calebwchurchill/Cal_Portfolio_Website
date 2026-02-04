@@ -115,13 +115,15 @@ function openIEWindow(url) {
   document.onmouseup = () => dragging = false;
 }
 
-function openWinamp() {
-  // Playlist
+// Ensure global access
+window.openWinamp = function() {
+  // Playlist: adjust filenames to match your repo (case-sensitive)
   const playlist = [
     { title: "Antilock - apologies for our absence", src: "audio/1.mp3" },
     { title: "Antilock - next time", src: "audio/2.mp3" },
     { title: "Antilock - killing my idols", src: "audio/3.mp3" }
   ];
+
   let currentTrack = 0;
 
   // Create the Winamp window
@@ -180,13 +182,14 @@ function openWinamp() {
   const progressBar = win.querySelector(".progress-bar");
   const progressContainer = win.querySelector(".progress-container");
 
+  // Track updater
   const updateTrack = () => {
     audio.src = playlist[currentTrack].src;
     trackLabel.textContent = "Track: " + playlist[currentTrack].title;
-    audio.play();
+    audio.play().catch(() => console.log("Autoplay blocked"));
   };
 
-  // Buttons
+  // Button handlers
   win.querySelector("#play-btn").onclick = () => audio.play();
   win.querySelector("#pause-btn").onclick = () => audio.pause();
   win.querySelector("#stop-btn").onclick = () => {
@@ -208,20 +211,19 @@ function openWinamp() {
     updateTrack();
   };
 
-  // Update progress bar
+  // Progress bar
   audio.ontimeupdate = () => {
     const percent = (audio.currentTime / audio.duration) * 100 || 0;
     progressBar.style.width = percent + "%";
   };
 
-  // Seek on click
+  // Seek
   progressContainer.onclick = e => {
     const rect = progressContainer.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
-    const newTime = (clickX / rect.width) * audio.duration;
-    audio.currentTime = newTime;
+    audio.currentTime = (clickX / rect.width) * audio.duration;
   };
-}
+};
 
 
 
