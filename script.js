@@ -119,7 +119,7 @@ function openIEWindow(url) {
 window.openWinamp = function() {
   // Playlist: adjust filenames to match your repo (case-sensitive)
   const playlist = [
-    { title: "Antilock - apologies for our absence", src: "audio/1.mp3" },
+    { title: "Antilock - apologies for our absence (feat. Boy Jr)", src: "audio/1.mp3" },
     { title: "Antilock - next time", src: "audio/2.mp3" },
     { title: "Antilock - killing my idols", src: "audio/3.mp3" }
   ];
