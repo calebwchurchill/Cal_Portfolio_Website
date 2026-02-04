@@ -375,6 +375,25 @@ html, body {
   opacity: 0.85;
 }
 
+#unmute-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 8px;
+  background: #c0c0c0;
+  border: 2px solid #404040;
+  font-family: "MS Sans Serif", Arial, sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  z-index: 10000;
+}
+
+#unmute-btn:hover {
+  background: #000080;
+  color: white;
+}
+
+
 .about-container {
   display: flex;
   flex-direction: column; /* stack photo above text */

@@ -223,6 +223,13 @@ function shutDown() {
   const screen = document.getElementById("shutdown-screen");
   const video = document.getElementById("shutdown-video");
   const credits = document.getElementById("shutdown-credits");
+  const unmuteBtn = document.getElementById("unmute-btn");
+
+  unmuteBtn.onclick = () => {
+    video.muted = false;
+    video.volume = 1;
+    unmuteBtn.style.display = "none"; // hide button after unmuting
+  };
 
   screen.style.display = "block";
 
