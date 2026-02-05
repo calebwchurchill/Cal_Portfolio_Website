@@ -471,6 +471,31 @@ html, body {
   font-size: 11px;
 }
 
+#screensaver {
+  position: fixed;
+  inset: 0;
+  background: black;
+  z-index: 999999;
+  overflow: hidden;
+  perspective: 900px;
+  cursor: none;
+}
+
+.screensaver-text {
+  position: absolute;
+  font-family: "Arial Black", Arial, sans-serif;
+  font-size: 100px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transform-style: preserve-3d;
+  will-change: transform, color;
+  text-shadow:
+    2px 2px 0 #000,
+    5px 5px 0 rgba(0,0,0,0.6);
+}
+
+
+
 
 
 

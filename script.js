@@ -441,7 +441,7 @@ function openNotepad() {
         <textarea readonly>
 Hi, I'm Cal!
 
-I'm a Senior QA Engineer, photographer and a musician!
+I'm a Senior QA Engineer, a photographer and a musician!
 
 At work, I enjoy working on:
 - Managing and mentoring direct reports
@@ -450,10 +450,10 @@ At work, I enjoy working on:
 - Improving developer confidence in releases
 
 In life, my passions are:
-- Taking photos of my friends
+- Taking photos of my friends and husband
 - Recording and listening to music
 - Travelling and exploring
-- Being hella gay
+- Designing t-shirts and hats!
 
 
     </textarea>
@@ -534,6 +534,76 @@ function openCreditsWindow() {
   makeDraggable(win);
 }
 
+function startTextScreensaver(text = "Cal Churchill") {
+  if (document.getElementById("screensaver")) return;
+
+  const saver = document.createElement("div");
+  saver.id = "screensaver";
+  saver.innerHTML = `<div class="screensaver-text">${text}</div>`;
+  document.body.appendChild(saver);
+
+  const el = saver.querySelector(".screensaver-text");
+
+  // Position + motion
+  let x = window.innerWidth / 2;
+  let y = window.innerHeight / 2;
+  let vx = 2.2;
+  let vy = 1.8;
+
+  // Rotation
+  let rotX = 0;
+  let rotY = 0;
+
+  // Color
+  let hue = 0;
+
+  const animate = () => {
+    const rect = el.getBoundingClientRect();
+
+    // Move
+    x += vx;
+    y += vy;
+
+    // Bounce
+    if (x <= 0 || x + rect.width >= window.innerWidth) vx *= -1;
+    if (y <= 0 || y + rect.height >= window.innerHeight) vy *= -1;
+
+    // Rotate
+    rotX += 0.4;
+    rotY += 0.7;
+
+    // Color cycle
+    hue = (hue + 0.5) % 360;
+
+    el.style.transform = `
+      translate(${x}px, ${y}px)
+      rotateX(${rotX}deg)
+      rotateY(${rotY}deg)
+    `;
+    el.style.color = `hsl(${hue}, 100%, 65%)`;
+
+    saver._anim = requestAnimationFrame(animate);
+  };
+
+  animate();
+
+  const exit = () => {
+    cancelAnimationFrame(saver._anim);
+    saver.remove();
+    document.removeEventListener("mousemove", exit);
+    document.removeEventListener("mousedown", exit);
+    document.removeEventListener("keydown", exit);
+    window.removeEventListener("resize", exit);
+  };
+
+  document.addEventListener("mousemove", exit);
+  document.addEventListener("mousedown", exit);
+  document.addEventListener("keydown", exit);
+  window.addEventListener("resize", exit);
+}
+
+
+
 
 function showBSOD() {
   const bsod = document.createElement("div");
@@ -562,6 +632,10 @@ function showBSOD() {
 }
 
 let rebooting = false; // tracks if reboot is in progress
+
+function goToSleep() {
+  startTextScreensaver("GOIN EEPY MODE")
+}
 
 function startDOSReboot() {
   // Fullscreen DOS-style window
