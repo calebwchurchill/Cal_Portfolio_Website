@@ -307,7 +307,7 @@ function openPhotosWindow() {
     </div>
     <div class="photos-body">
       ${photos.map(p => `
-        <div class="photo-icon" ondblclick="openPhotoViewer('${p.src}', '${p.name}')">
+        <div class="photo-icon" onclick="openPhotoViewer('${p.src}', '${p.name}')">
           <img src="${p.src}" />
           <span>${p.name}</span>
         </div>
@@ -319,6 +319,7 @@ function openPhotosWindow() {
   win.querySelector(".close-btn").onclick = () => win.remove();
   makeDraggable(win);
 }
+
 
 function openPhotoViewer(src, name) {
   const win = document.createElement("div");
