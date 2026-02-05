@@ -8,6 +8,15 @@ const photos = [
   { name: "Photo_04.jpg", src: "photos/photo4.jpg" }
 ];
 
+const WALLPAPERS = [
+  "wallpapers/1.jpg",
+  "wallpapers/2.jpg",
+  "wallpapers/3.jpg",
+  "#008080"
+];
+
+let currentWallpaperIndex = 0;
+
 let zIndex = 10;
 
 /* START MENU */
@@ -522,6 +531,8 @@ function openCreditsWindow() {
     </div>
     <div class="notepad-body" style="padding: 10px; font-size: 14px; line-height: 1.4;">
       Startup music composed and performed by Cal Churchill<br>
+      <br>
+      Inspiration provided by the GOAT, Brian Eno!<br>
     </div>
   `;
 
@@ -678,4 +689,87 @@ function startDOSReboot() {
     }
   }, 1000); // 1 line per second
 }
+
+function openEasterEggSettings() {
+  const win = document.createElement("div");
+  win.className = "window";
+  win.style.width = "360px";
+  win.style.height = "340px";
+  win.style.top = "120px";
+  win.style.left = "140px";
+  win.style.zIndex = zIndex++;
+
+  win.innerHTML = `
+    <div class="title-bar">
+      <span>System Settings</span>
+      <div class="close-btn"></div>
+    </div>
+
+    <div class="window-body" style="padding:8px; font-size:12px;">
+
+      <fieldset>
+        <legend>Power Settings</legend>
+        <button id="reboot-now">Restart Computer</button>
+      </fieldset>
+
+      <fieldset>
+        <legend>Desktop Settings</legend>
+        <button id="change-wallpaper">Change Wallpaper</button>
+      </fieldset>
+
+    </div>
+  `;
+
+  desktop.appendChild(win);
+  makeDraggable(win);
+
+  win.querySelector(".close-btn").onclick = () => win.remove();
+
+  /* ====== HOOKS ====== */
+
+  const ssText = win.querySelector("#ss-text");
+  const ssEnable = win.querySelector("#ss-enable");
+
+
+  win.querySelector("#reboot-now").onclick = () => {
+    startDOSReboot();
+  };
+
+  win.querySelector("#change-wallpaper").onclick = () => {
+    cycleWallpaper();
+  };
+
+
+  // Example toggles (wire these to your globals if you want)
+  win.querySelector("#bsod-toggle").onchange = e => {
+    window.EASTER_EGGS = window.EASTER_EGGS || {};
+    window.EASTER_EGGS.bsodEnabled = e.target.checked;
+  };
+
+  win.querySelector("#startup-sound").onchange = e => {
+    window.EASTER_EGGS = window.EASTER_EGGS || {};
+    window.EASTER_EGGS.startupSound = e.target.checked;
+  };
+}
+
+function setWallpaper(src) {
+  if (src.startsWith("#")) {
+    desktop.style.background = src;
+    desktop.style.backgroundImage = "none";
+  } else {
+    desktop.style.background = `url(${src}) center / cover no-repeat fixed`;
+  }
+
+  localStorage.setItem("wallpaper", src);
+}
+
+function cycleWallpaper() {
+  currentWallpaperIndex =
+    (currentWallpaperIndex + 1) % WALLPAPERS.length;
+
+  setWallpaper(WALLPAPERS[currentWallpaperIndex]);
+}
+
+
+
 
