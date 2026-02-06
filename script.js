@@ -193,7 +193,7 @@ function openPhotoViewer(src, name) {
 
 /* ================= DOOM ================= */
 
-function openDOOM() {
+window.openDOOM = function() {
   const win = document.createElement("div");
   win.className = "window";
   win.style.width = "900px";
@@ -206,7 +206,6 @@ function openDOOM() {
   win.innerHTML = `
     <div class="title-bar">
       <span>DOOM</span>
-      <!-- ❌ NO CLOSE BUTTON -->
     </div>
 
     <div style="
@@ -215,7 +214,6 @@ function openDOOM() {
       height:calc(100% - 24px);
       background:black;
     ">
-      <!-- EXIT BAR -->
       <div style="
         background:#c0c0c0;
         padding:4px;
@@ -234,7 +232,6 @@ function openDOOM() {
         </button>
       </div>
 
-      <!-- DOOM IFRAME -->
       <iframe
         id="doom-frame"
         src="https://js-dos.com/games/doom2.html"
@@ -255,13 +252,13 @@ function openDOOM() {
   const exitBtn = win.querySelector("#exit-doom-btn");
   const frame = win.querySelector("#doom-frame");
 
-  // 🔥 HARD KILL
   exitBtn.addEventListener("click", () => {
-    frame.src = "about:blank"; // extra safety
-    frame.remove();            // destroys DOS
-    win.remove();              // remove window
+    frame.src = "about:blank";
+    frame.remove();
+    win.remove();
   });
-}
+};
+
 
 
 
