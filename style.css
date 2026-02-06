@@ -114,14 +114,15 @@ html, body {
 }
 
 .close-btn {
-  width: 18px;
-  height: 18px;
-  background: red;
-  border: 2px outset #fff;
+  width: 16px;
+  height: 16px;
+  background: #c0c0c0;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #404040;
+  border-bottom: 2px solid #404040;
   cursor: pointer;
-  pointer-events: auto;
 }
-
 
 /* INTERNET EXPLORER */
 .ie-toolbar {
@@ -492,7 +493,6 @@ html, body {
     2px 2px 0 #000,
     5px 5px 0 rgba(0,0,0,0.6);
 }
-
 
 
 
