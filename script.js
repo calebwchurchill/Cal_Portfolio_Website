@@ -32,10 +32,6 @@ document.addEventListener("click", e => {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("play-doom").addEventListener("click", openDOOM);
-});
-
 /* ================= DRAGGABLE WINDOWS ================= */
 /* SINGLE, FIXED VERSION — DO NOT DUPLICATE */
 
